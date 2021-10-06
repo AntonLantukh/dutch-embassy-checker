@@ -8,20 +8,24 @@ const {getDates} = require('./src/dates');
 dotEnv.config();
 const app = express();
 
-const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
+const {BOT_TOKEN, PORT, CHAT_ID, POLLING_INTERVAL} = process.env;
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server started at port ${process.env.PORT}`);
+const bot = new TelegramBot(BOT_TOKEN, {polling: true});
+
+app.listen(PORT, async () => {
+    console.log(`Server started at port ${PORT}`);
 
     bot.onText(/\/getdates/, async () => {
         await getDates(bot);
     });
 
     bot.onText(/\/getmood/, () => {
-        bot.sendMessage(process.env.CHAT_ID, 'Oh, I am fine, thank you! 😄');
+        bot.sendMessage(CHAT_ID, 'Oh, I am fine, thank you! 😄');
     });
 
     bot.on('polling_error', console.log);
 
-    setInterval(() => getDates(bot), process.env.POLLING_INTERVAL);
+    await getDates(bot);
+
+    setInterval(() => getDates(bot), POLLING_INTERVAL);
 });

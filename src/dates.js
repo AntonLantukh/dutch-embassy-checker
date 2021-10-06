@@ -3,23 +3,40 @@ const puppeteer = require('puppeteer');
 const DUTCH_EMBASSY_SITE =
     'https://www.netherlandsworldwide.nl/countries/russian-federation/travel/applying-for-a-long-stay-visa-mvv';
 
-const APPOINTMENT_SELECTOR = 'a[aria-label="Make an appointment (opens external website)"]';
-const PORTAL_SELECTOR = 'a[id="plhMain_lnkSchApp"]';
+const SELECTORS = {
+    appointmentLink: 'a[aria-label="Make an appointment (opens external website)"]',
+    portalLink: 'a[id="plhMain_lnkSchApp"]',
+    formEmbassy: 'select[id="plhMain_cboVAC"]',
+    formSubmit: 'input[id="plhMain_btnSubmit"]',
+    formApplicantsNumber: 'input[id="plhMain_tbxNumOfApplicants"]',
+    formVisaType: 'select[id="plhMain_cboVisaCategory"]',
+    formTitle: 'select[id="plhMain_repAppVisaDetails_cboTitle_0"]',
+    formName: 'input[id="plhMain_repAppVisaDetails_tbxFName_0"]',
+    formSurname: 'input[id="plhMain_repAppVisaDetails_tbxLName_0"]',
+    formPhone: 'input[id="plhMain_repAppVisaDetails_tbxContactNumber_0"]',
+    formEmail: 'input[id="plhMain_repAppVisaDetails_tbxEmailAddress_0"]',
+    formConfirmation: 'select[id="plhMain_cboConfirmation"]',
+    availableDate: '.OpenDateAllocated a',
+    availableTime: 'a[id="plhMain_gvSlot_lnkTimeSlot_0"]',
+};
 
-const SCHEDULE_SELECTOR = 'select[id="plhMain_cboVAC"]';
-const SUBMIT_BUTTON = 'input[id="plhMain_btnSubmit"]';
+const DATA = {
+    /** Moscow */
+    embassy: '72',
+    /** MVV-visa */
+    visaType: '8',
+    /** Applicants number */
+    applicantsNumber: '1',
+    title: 'MR.',
+    name: 'ANTON',
+    surname: 'LANTUKH',
+    phone: '79150543728',
+    email: 'lantukhanton@gmail.com',
+    /** Data confirmed */
+    confirmation: '1',
+};
 
-const FORM_APPLICANTS_NUMBER = 'input[id="plhMain_tbxNumOfApplicants"]';
-const FORM_VISA_TYPE = 'select[id="plhMain_cboVisaCategory"]';
-
-const FORM_TITLE = 'select[id="plhMain_repAppVisaDetails_cboTitle_0"]';
-const FORM_NAME = 'input[id="plhMain_repAppVisaDetails_tbxFName_0"]';
-const FORM_SURNAME = 'input[id="plhMain_repAppVisaDetails_tbxLName_0"]';
-const FORM_PHONE = 'input[id="plhMain_repAppVisaDetails_tbxContactNumber_0"]';
-const FORM_EMAIL = 'input[id="plhMain_repAppVisaDetails_tbxEmailAddress_0"]';
-const FORM_CONFIRMATION = 'select[id="plhMain_cboConfirmation"]';
-
-const AVAILABLE_DATE = '.OpenDateAllocated a';
+const {WAIT_TIMEOUT} = process.env;
 
 module.exports.getDates = async bot => {
     try {
@@ -29,46 +46,74 @@ module.exports.getDates = async bot => {
         const context = await browser.createIncognitoBrowserContext();
         const page = await context.newPage();
 
+        // Listening to the dialog
+        page.on('dialog', async dialog => {
+            await dialog.accept();
+        });
+
         // Opening first page
         await page.setViewport({width: 1920, height: 1080});
         await page.goto(DUTCH_EMBASSY_SITE);
-        await page.waitForSelector(APPOINTMENT_SELECTOR, {timeout: 10000});
+        await page.waitForSelector(SELECTORS.appointmentLink, {timeout: WAIT_TIMEOUT});
 
         // Going to portal
-        await page.click(APPOINTMENT_SELECTOR);
-        await page.waitForSelector(PORTAL_SELECTOR, {timeout: 10000});
+        await page.click(SELECTORS.appointmentLink);
+        await page.waitForSelector(SELECTORS.portalLink, {timeout: WAIT_TIMEOUT});
 
         // Going to schedule and selecting Moscow
-        await page.click(PORTAL_SELECTOR);
-        await page.waitForSelector(SCHEDULE_SELECTOR, {timeout: 10000});
-        await page.select(SCHEDULE_SELECTOR, '72');
-        await page.click(SUBMIT_BUTTON);
+        await page.click(SELECTORS.portalLink);
+        await page.waitForSelector(SELECTORS.formEmbassy, {timeout: WAIT_TIMEOUT});
+        await page.select(SELECTORS.formEmbassy, DATA.embassy);
+        await page.click(SELECTORS.formSubmit);
 
         // Selecting number of applicants and visa type
-        await page.waitForSelector(FORM_APPLICANTS_NUMBER, {timeout: 10000});
-        await page.select(FORM_VISA_TYPE, '8');
-        await page.$eval(FORM_APPLICANTS_NUMBER, el => (el.value = ''));
-        await page.type(FORM_APPLICANTS_NUMBER, '1');
-        await page.click(SUBMIT_BUTTON);
+        await page.waitForSelector(SELECTORS.formVisaType, {timeout: WAIT_TIMEOUT});
+        await page.select(SELECTORS.formVisaType, DATA.visaType);
+        await page.$eval(SELECTORS.formApplicantsNumber, el => (el.value = ''));
+        await page.type(SELECTORS.formApplicantsNumber, DATA.applicantsNumber);
+        await page.click(SELECTORS.formSubmit);
 
         // Inserting applicant data
-        await page.waitForSelector(FORM_TITLE, {timeout: 10000});
-        await page.select(FORM_TITLE, 'MR.');
-        await page.type(FORM_NAME, 'IVAN');
-        await page.type(FORM_SURNAME, 'IVANOV');
-        await page.type(FORM_PHONE, '79168887766');
-        await page.type(FORM_EMAIL, 'abc@yandex.ru');
-        await page.select(FORM_CONFIRMATION, '1');
-        await page.click(SUBMIT_BUTTON);
+        await page.waitForSelector(SELECTORS.formTitle, {timeout: WAIT_TIMEOUT});
+        await page.select(SELECTORS.formTitle, DATA.title);
+        await page.type(SELECTORS.formName, DATA.name);
+        await page.type(SELECTORS.formSurname, DATA.surname);
+        await page.type(SELECTORS.formPhone, DATA.phone);
+        await page.type(SELECTORS.formEmail, DATA.email);
+        await page.select(SELECTORS.formConfirmation, DATA.confirmation);
+        await page.click(SELECTORS.formSubmit);
 
-        // Searching for dates
-        await page.waitForSelector(AVAILABLE_DATE, {timeout: 10000});
-        const titles = await page.$$eval(AVAILABLE_DATE, days => days.map(day => day.getAttribute('title')));
+        // Searching for dates and sending them
+        await page.waitForSelector(SELECTORS.availableDate, {timeout: WAIT_TIMEOUT});
+        const titles = await page.$$eval(SELECTORS.availableDate, days => days.map(day => day.getAttribute('title')));
         bot.sendMessage(process.env.CHAT_ID, `Available dates: ${titles.join(', ').toString()}`);
 
+        // Submitting application for current month
+        await page.waitForSelector(SELECTORS.availableDate, {timeout: WAIT_TIMEOUT});
+        const dates = await page.$$eval(SELECTORS.availableDate, days => days.map(day => day.getAttribute('title')));
+        bot.sendMessage(process.env.CHAT_ID, `Available dates: ${dates.join(', ').toString()}`);
         console.log(`Dates successfully sent to the bot!: ${new Date()}`);
+
+        const firstAvailableDate = dates?.[0];
+
+        // Setting appointment if current month is available
+        if ((firstAvailableDate || '').includes('October')) {
+            console.log('Wow, found great date!');
+            // Selecting date
+            await page.click(SELECTORS.availableDate);
+            await page.waitForSelector(SELECTORS.availableTime, {timeout: WAIT_TIMEOUT});
+
+            // Selecting time
+            const time = await page.$eval(SELECTORS.availableTime, time => time.textContent);
+            await page.click(SELECTORS.availableTime);
+            bot.sendMessage(
+                process.env.CHAT_ID,
+                `Appointment scheduled at date: ${firstAvailableDate}, time: ${time} 😉`,
+            );
+            console.log('Appointment scheduled!');
+        }
     } catch (e) {
         console.log(e);
-        process.exit();
+        bot.sendMessage(process.env.CHAT_ID, 'Failed to get dates: 🙁');
     }
 };
