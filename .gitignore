@@ -1,0 +1,22 @@
+# IDE
+.idea/
+.DS_STORE
+.vscode/
+
+# ENV
+.env
+.env.*
+
+# Webpack
+dist
+lib
+build
+
+# node_modules
+node_modules
+
+# husky
+.husky/
+
+# coverage
+coverage

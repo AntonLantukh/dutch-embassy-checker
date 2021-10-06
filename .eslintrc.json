@@ -1,0 +1,23 @@
+{
+    "env": {
+        "browser": false,
+        "es6": true,
+        "node": true,
+        "commonjs": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:json/recommended",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
+    "plugins": ["import", "jest", "json", "prettier"],
+    "rules": {
+        "lines-between-class-members": 2,
+        "import/no-unresolved": "error",
+        "prettier/prettier": "error",
+        "json/*": "error",
+        "no-console": "error"
+    }
+}
