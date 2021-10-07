@@ -42,12 +42,12 @@ module.exports.getDates = async bot => {
     try {
         console.log(`Started fetching dates...: ${new Date()}`);
 
-        const browser = await puppeteer.launch({headless: true});
+        const browser = await puppeteer.launch({headless: true, args: ['--incognito']});
         const context = await browser.createIncognitoBrowserContext();
         const page = await context.newPage();
 
         // Listening to the dialog
-        page.on('dialog', async dialog => {
+        page.once('dialog', async dialog => {
             await dialog.accept();
         });
 
@@ -112,8 +112,11 @@ module.exports.getDates = async bot => {
             );
             console.log('Appointment scheduled!');
         }
+
+        await browser.close();
     } catch (e) {
         console.log(e);
         bot.sendMessage(process.env.CHAT_ID, 'Failed to get dates: 🙁');
+        await browser.close();
     }
 };
