@@ -87,11 +87,6 @@ module.exports.getDates = async bot => {
         await page.waitForSelector(SELECTORS.availableDate, {timeout: WAIT_TIMEOUT});
         const titles = await page.$$eval(SELECTORS.availableDate, days => days.map(day => day.getAttribute('title')));
         bot.sendMessage(process.env.CHAT_ID, `Available dates: ${titles.join(', ').toString()}`);
-
-        // Submitting application for current month
-        await page.waitForSelector(SELECTORS.availableDate, {timeout: WAIT_TIMEOUT});
-        const dates = await page.$$eval(SELECTORS.availableDate, days => days.map(day => day.getAttribute('title')));
-        bot.sendMessage(process.env.CHAT_ID, `Available dates: ${dates.join(', ').toString()}`);
         console.log(`Dates successfully sent to the bot!: ${new Date()}`);
 
         const firstAvailableDate = dates?.[0];
