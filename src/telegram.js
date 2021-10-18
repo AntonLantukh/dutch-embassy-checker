@@ -19,7 +19,7 @@ class TelegramService {
 
     startListening() {
         this.bot.onText(/\/getdates/, async () => {
-            await getDates(bot);
+            await getDates(this.bot);
         });
 
         this.bot.onText(/\/getmood/, () => {

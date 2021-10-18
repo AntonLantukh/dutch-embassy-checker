@@ -10,11 +10,11 @@ const app = express();
 
 const {BOT_TOKEN, PORT, CHAT_ID, POLLING_INTERVAL} = process.env;
 
+const bot = new TelegramService(BOT_TOKEN, CHAT_ID);
+bot.startListening();
+
 app.listen(PORT, async () => {
     console.log(`Server started at port ${PORT}`);
-
-    const bot = new TelegramService(BOT_TOKEN, CHAT_ID);
-    bot.startListening();
 
     await getDates(bot);
 
