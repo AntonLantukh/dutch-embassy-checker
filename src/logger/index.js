@@ -1,5 +1,6 @@
-const {format, transports, createLogger} = require('winston');
+import pkg from 'winston';
 
+const {format, transports, createLogger} = pkg;
 const {combine, colorize, timestamp, printf, errors} = format;
 
 const printFormat = info => {
@@ -10,10 +11,8 @@ const printFormat = info => {
 
 const formats = combine(colorize(), timestamp(), errors({stack: true}), printf(printFormat));
 
-const logger = createLogger({
+export const logger = createLogger({
     level: 'info',
     format: formats,
     transports: [new transports.Console({format: formats})],
 });
-
-module.exports = {logger};
