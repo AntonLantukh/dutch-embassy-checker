@@ -1,10 +1,9 @@
-import {makePo} from '../utils/launcher';
-import App from '../pageObjects/app';
-
 import {logger} from '../logger';
+import App from '../pageObjects/app';
+import {makePo} from '../utils/launcher';
 
 export const getDates = async (bot, data) => {
-    const {app, browser} = makePo(App);
+    const {app, browser} = await makePo(App);
 
     try {
         logger.info('Started fetching dates...');
@@ -46,13 +45,13 @@ export const getDates = async (bot, data) => {
             await app.time.selectFirstAvaialbleTimeSlot();
 
             bot.sendMessage(
-                process.env.CHAT_ID,
                 `Appointment scheduled at date: ${firstAvailableDate}, time: ${time} 😉`,
             );
             logger.info('Appointment scheduled!');
         }
     } catch (e) {
-        bot.sendMessage(process.env.CHAT_ID, 'Failed to get dates: 🙁');
+        bot.sendMessage('Failed to get dates: 🙁');
+        logger.error(e);
     } finally {
         await browser.close();
     }

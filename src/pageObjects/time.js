@@ -1,4 +1,10 @@
-export default class Time {
+import Base from './base';
+
+export default class Time extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     availableTime(idx) {
         return `a[id="plhMain_gvSlot_lnkTimeSlot_${idx}"]`;
     }
@@ -12,7 +18,7 @@ export default class Time {
     }
 
     async waitForTimePage() {
-        await waitForPage(this.page, this.bot, this.timeList(), 'Could not load time page 😱');
+        await this.waitForPage(this.page, this.bot, this.timeList(), 'Could not load time page 😱');
     }
 
     async getFirstAvailableTimeSlot() {

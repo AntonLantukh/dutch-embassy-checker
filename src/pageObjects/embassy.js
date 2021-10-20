@@ -1,4 +1,10 @@
-export default class Embassy {
+import Base from './base';
+
+export default class Embassy extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     embassy() {
         return 'select[id="plhMain_cboVAC"]';
     }
@@ -8,7 +14,12 @@ export default class Embassy {
     }
 
     async waitForEmbassyPage() {
-        await waitForPage(this.page, this.bot, this.embassy(), 'Could not load embassy page 😦');
+        await this.waitForPage(
+            this.page,
+            this.bot,
+            this.embassy(),
+            'Could not load embassy page 😦',
+        );
     }
 
     async selectEmbassy(embassyType) {

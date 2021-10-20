@@ -1,6 +1,11 @@
 import {logger} from '../logger';
+import Base from './base';
 
-export default class Dates {
+export default class Dates extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     availableDate() {
         return '.OpenDateAllocated a';
     }
@@ -10,7 +15,12 @@ export default class Dates {
     }
 
     async waitForDatesPage() {
-        await waitForPage(this.page, this.bot, this.calendar(), 'Could not load calendar page 😯');
+        await this.waitForPage(
+            this.page,
+            this.bot,
+            this.calendar(),
+            'Could not load calendar page 😯',
+        );
     }
 
     async reportAvailableDates() {

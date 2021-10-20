@@ -2,19 +2,16 @@ import TelegramBot from 'node-telegram-bot-api';
 
 import {getDates} from '../commands/dates';
 import {MOSCOW_DATA, SAINT_PETERSBURG_DATA} from '../constants';
+import {logger} from '../logger';
 
 export class TelegramService {
-    bot;
-    token;
-    chatId;
-
     constructor(token, chatId) {
         this.token = token;
         this.chatId = chatId;
-        this.#init(token, chatId);
+        this.init(token, chatId);
     }
 
-    #init(token) {
+    init(token) {
         this.bot = new TelegramBot(token, {polling: true});
     }
 
@@ -31,7 +28,7 @@ export class TelegramService {
             this.bot.sendMessage(this.chatId, 'Oh, I am fine, thank you! 😄');
         });
 
-        this.bot.on('polling_error', console.log);
+        this.bot.on('polling_error', logger.info);
     }
 
     sendMessage(...args) {

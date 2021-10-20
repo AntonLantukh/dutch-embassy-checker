@@ -1,3 +1,5 @@
+import {waitForPage as waitFor} from '../utils/wait';
+
 export default class Base {
     constructor(page, bot) {
         this.page = page;
@@ -5,6 +7,6 @@ export default class Base {
     }
 
     async waitForPage(page, bot, selector, error) {
-        await waitForPage(page, bot, selector, error);
+        await waitFor(page, bot, selector, error);
     }
 }

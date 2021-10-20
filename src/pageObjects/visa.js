@@ -1,6 +1,10 @@
-import {waitForPage} from '../utils/wait';
+import Base from './base';
 
-export default class Visa {
+export default class Visa extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     visaType() {
         return 'select[id="plhMain_cboVisaCategory"]';
     }
@@ -14,7 +18,12 @@ export default class Visa {
     }
 
     async waitForVisaPage() {
-        await waitForPage(this.page, this.bot, this.visaType(), 'Could not load visa type page 😳');
+        await this.waitForPage(
+            this.page,
+            this.bot,
+            this.visaType(),
+            'Could not load visa type page 😳',
+        );
     }
 
     async setApplicantsNumber(applicantsNumber) {

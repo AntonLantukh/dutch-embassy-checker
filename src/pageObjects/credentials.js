@@ -1,6 +1,11 @@
 import {CONFIRM_VALUE} from '../constants';
+import Base from './base';
 
-export default class Credentaials {
+export default class Credentaials extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     credentials() {
         return 'table[id="Maintable"]';
     }
@@ -34,7 +39,7 @@ export default class Credentaials {
     }
 
     async waitForCredentialsPage() {
-        await waitForPage(
+        await this.waitForPage(
             this.page,
             this.bot,
             this.credentials(),
@@ -44,7 +49,7 @@ export default class Credentaials {
 
     async insertApplicantsData(data) {
         for (let idx = 0; idx < data.length; idx++) {
-            const {title, name, surname, phone, email} = element;
+            const {title, name, surname, phone, email} = data[idx];
 
             await this.page.select(this.title(idx), title);
             await this.page.type(this.name(idx), name);

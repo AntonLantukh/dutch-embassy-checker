@@ -1,5 +1,7 @@
 import {TimeoutError} from 'puppeteer/Errors';
 
+import {logger} from '../logger';
+
 const {WAIT_TIMEOUT} = process.env;
 
 export class PageTimeoutError extends Error {

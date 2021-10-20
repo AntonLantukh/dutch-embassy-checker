@@ -1,20 +1,19 @@
+import Base from './base';
 import Credentials from './credentials';
 import Dates from './dates';
 import Embassy from './embassy';
-import Time from './time';
 import Schedule from './schedule';
-
-import Base from './base';
+import Time from './time';
 
 class App extends Base {
     constructor(page, bot) {
         super(page, bot);
 
-        this.credentials = new Credentials();
-        this.embassy = new Embassy();
-        this.dates = new Dates();
-        this.time = new Time();
-        this.schedule = new Schedule();
+        this.credentials = new Credentials(page, bot);
+        this.embassy = new Embassy(page, bot);
+        this.dates = new Dates(page, bot);
+        this.time = new Time(page, bot);
+        this.schedule = new Schedule(page, bot);
     }
 
     appointmentLink() {
@@ -22,9 +21,9 @@ class App extends Base {
     }
 
     async waitForAppointmentPage() {
-        this.waitForPage(
-            page,
-            bot,
+        await this.waitForPage(
+            this.page,
+            this.bot,
             this.appointmentLink(),
             'Could not load appointment info page 😭',
         );

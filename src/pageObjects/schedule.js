@@ -1,6 +1,11 @@
 import {SCHEDULE_TYPE} from '../constants';
+import Base from './base';
 
-export default class Schedule {
+export default class Schedule extends Base {
+    constructor(page, bot) {
+        super(page, bot);
+    }
+
     scheduleLink() {
         return 'a[id="plhMain_lnkSchApp"]';
     }
@@ -14,7 +19,7 @@ export default class Schedule {
     }
 
     async waitForSchedulePage() {
-        await waitForPage(
+        await this.waitForPage(
             this.page,
             this.bot,
             this.scheduleLink(),
@@ -28,10 +33,13 @@ export default class Schedule {
         switch (type) {
             case SCHEDULE_TYPE.SCHEDULE:
                 link = this.scheduleLink();
+                break;
             case SCHEDULE_TYPE.RESCHEDULE:
                 link = this.rescheduleLink();
+                break;
             case SCHEDULE_TYPE.CANCEL:
                 link = this.cancelLink();
+                break;
         }
 
         await this.page.click(link);
