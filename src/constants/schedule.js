@@ -1,0 +1,7 @@
+export const SCHEDULE_TYPE = {
+    SCHEDULE: 'SCHEDULE',
+
+    RESCHEDULE: 'RESCHEDULE',
+
+    CANCEL: 'CANCEL',
+};

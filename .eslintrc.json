@@ -22,6 +22,7 @@
         "simple-import-sort/exports": "error",
         "simple-import-sort/imports": "error",
         "lines-between-class-members": 2,
+        "no-constant-condition": "warn",
         "import/no-unresolved": "error",
         "prettier/prettier": "error",
         "json/*": "error",

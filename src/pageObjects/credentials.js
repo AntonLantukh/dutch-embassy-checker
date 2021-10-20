@@ -1,4 +1,4 @@
-import {CONFIRM_VALUE} from '../constants';
+import {CONFIRM_VALUE} from '../constants/puppereer';
 import Base from './base';
 
 export default class Credentaials extends Base {

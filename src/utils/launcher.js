@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-import {DUTCH_EMBASSY_SITE} from '../constants';
+import {DUTCH_EMBASSY_SITE} from '../constants/puppereer';
 
 export const makePo = async (App, bot) => {
     const browser = await puppeteer.launch({headless: true, args: ['--incognito']});

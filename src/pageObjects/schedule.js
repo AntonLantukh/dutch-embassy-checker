@@ -1,4 +1,4 @@
-import {SCHEDULE_TYPE} from '../constants';
+import {SCHEDULE_TYPE} from '../constants/schedule';
 import Base from './base';
 
 export default class Schedule extends Base {

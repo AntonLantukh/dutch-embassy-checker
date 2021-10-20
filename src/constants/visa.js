@@ -1,31 +1,4 @@
-export const EMBASSY = {
-    MOSCOW: '72',
-
-    SAINT_PETERSBURG: '112',
-};
-
-export const CONFIRM_VALUE = '1';
-
-export const DUTCH_EMBASSY_SITE =
-    'https://www.netherlandsworldwide.nl/countries/russian-federation/travel/applying-for-a-long-stay-visa-mvv';
-
-export const SCHEDULE_TYPE = {
-    SCHEDULE: 'SCHEDULE',
-
-    RESCHEDULE: 'RESCHEDULE',
-
-    CANCEL: 'CANCEL',
-};
-
-export const APPLICANT = {
-    title: 'MR.',
-    name: 'ANTON',
-    surname: 'LANTUKH',
-    phone: '79150543728',
-    email: 'lantukhanton@gmail.com',
-};
-
-export const MOSCOW_VISA_TYPE = {
+export const MOSCOW_VISA_TYPE_VALUE = {
     /** Consular declarations */
     CONSULAR_DECLARATIONS: '917',
 
@@ -39,7 +12,17 @@ export const MOSCOW_VISA_TYPE = {
     PASSPORT: '925',
 };
 
-export const SAINT_PETERSBURG_VISA_TYPE = {
+export const MOSCOW_VISA_TYPE_TEXT = {
+    CONSULAR_DECLARATIONS: 'Consular declarations',
+
+    ID_CARD: 'ID card',
+
+    MVV_VISA: 'MVV – visa for long stay (>90 days)',
+
+    PASSPORT: 'Passport',
+};
+
+export const SAINT_PETERSBURG_VISA_TYPE_VALUE = {
     /** Certificate of legal capacity to marry */
     MARY_CERTIFICATE: '902',
 
@@ -83,22 +66,32 @@ export const SAINT_PETERSBURG_VISA_TYPE = {
     PASSPORT: '925',
 };
 
-export const BASE_DATA = {
-    schedule: SCHEDULE_TYPE.SCHEDULE,
-    embassy: EMBASSY.MOSCOW,
-    visaType: MOSCOW_VISA_TYPE.MVV_VISA,
-    applicantsNumber: '1',
-    applicants: [APPLICANT],
-};
+export const SAINT_PETERSBURG_VISA_TYPE_TEXT = {
+    MARY_CERTIFICATE: 'Certificate of legal capacity to marry',
 
-export const MOSCOW_DATA = {
-    ...BASE_DATA,
-    embassy: EMBASSY.MOSCOW,
-    visaType: MOSCOW_VISA_TYPE.MVV_VISA,
-};
+    LIFE_CERTIFICATE: 'Certificate of life (attestatie de vita)',
 
-export const SAINT_PETERSBURG_DATA = {
-    ...BASE_DATA,
-    embassy: EMBASSY.SAINT_PETERSBURG,
-    visaType: SAINT_PETERSBURG_VISA_TYPE.MVV_EMPLOYMENT,
+    CONFORM_COPY: 'Copy conform original (NL passport, ID card or driving license)',
+
+    MARTIAL_STATUS: 'Declaration of marital status',
+
+    RESIDENCE_DECLARATION: 'Declaration of residence',
+
+    ID_CARD: 'ID card',
+
+    SIGNATURE_LEGALIZATION: 'Legalisation of a signature',
+
+    MVV_EXCHANGE_STUDY: 'MVV - Exchange for study',
+
+    MVV_EMPLOYMENT: 'MVV – Employment',
+
+    MVV_FAMILY: 'MVV – Family',
+
+    MVV_STUDY: 'MVV – Study',
+
+    OPTION_REQUEST: 'Option request',
+
+    OTHER_REQUESTS: 'Other requests',
+
+    PASSPORT: 'Passport',
 };

@@ -14,6 +14,37 @@ export default class Dates extends Base {
         return 'table[id="plhMain_cldAppointment"]';
     }
 
+    nextButton() {
+        return 'a[title="Go to the next month"]';
+    }
+
+    async getDates() {
+        const dates = [];
+
+        while (true) {
+            const newDates = await this.page.$$eval(this.availableDate(), days =>
+                (days || []).map(day => day.getAttribute('title')),
+            );
+
+            dates.push(...newDates);
+
+            const nextButton = await this.page
+                .$eval(this.nextButton(), msg => msg?.textContent || null)
+                .catch(() => null);
+
+            if (!nextButton) {
+                break;
+            }
+
+            await this.page.click(this.nextButton());
+            await this.page
+                .waitForNavigation({timeout: 10000, waitUntil: ['domcontentloaded']})
+                .catch(() => {});
+            await this.waitForDatesPage();
+        }
+        return dates;
+    }
+
     async waitForDatesPage() {
         await this.waitForPage(
             this.page,
@@ -24,9 +55,7 @@ export default class Dates extends Base {
     }
 
     async reportAvailableDates() {
-        const dates = await this.page.$$eval(this.availableDate, days =>
-            (days || []).map(day => day.getAttribute('title')),
-        );
+        const dates = await this.getDates();
 
         if (!dates?.length) {
             this.bot.sendMessage('No available dates 😥');
@@ -38,9 +67,5 @@ export default class Dates extends Base {
         logger.info('Dates successfully sent to the bot!');
 
         return dates;
-    }
-
-    async clickFirstAvailableDate() {
-        await this.page.click(this.availableDate());
     }
 }

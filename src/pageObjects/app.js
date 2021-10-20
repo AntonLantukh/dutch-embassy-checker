@@ -4,6 +4,7 @@ import Dates from './dates';
 import Embassy from './embassy';
 import Schedule from './schedule';
 import Time from './time';
+import Visa from './visa';
 
 class App extends Base {
     constructor(page, bot) {
@@ -14,6 +15,7 @@ class App extends Base {
         this.dates = new Dates(page, bot);
         this.time = new Time(page, bot);
         this.schedule = new Schedule(page, bot);
+        this.visa = new Visa(page, bot);
     }
 
     appointmentLink() {
